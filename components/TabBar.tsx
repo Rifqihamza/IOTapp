@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         left: 0,
         right: 0,
-        height: 80,
+        height: 60,
         paddingVertical: 10,
         elevation: 12,
         shadowColor: "#000",
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     focusedIconContainer: {
-        transform: [{ translateY: -30 }], // Move the icon and background up
+        transform: [{ translateY: -20 }], // Move the icon and background up
         backgroundColor: '#4dc6e8', // Optional: Add a background color for the focused state
         borderRadius: 50, // Optional: Add border radius for a circular effect
 
