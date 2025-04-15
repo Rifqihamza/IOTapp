@@ -4,8 +4,13 @@ import { StatusBar } from "react-native";
 export default function Layout() {
   return (
     <>
-      <StatusBar barStyle="dark-content" />
-      <Stack  screenOptions={{ headerShown: false }} />
+      <StatusBar barStyle="default" />
+      <Stack>
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="MenuPages" options={{ headerShown: false }} />
+        <Stack.Screen name="AccountPages" options={{ headerShown: false }} />
+        <Stack.Screen name="ConnectionPages" options={{ headerShown: false }} />
+      </Stack>
     </>
   );
-}
+};
