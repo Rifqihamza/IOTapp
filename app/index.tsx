@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
@@ -8,9 +8,10 @@ import {
   Image,
   Platform,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, Redirect } from 'expo-router';
 import Greeting from '@/components/greetings';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 type RoutePath = '/MenuPages' | '/AccountPages' | '/ConnectionPages';
@@ -30,6 +31,24 @@ const HomePages = () => {
     { name: 'Account', route: '/AccountPages', icon: 'person', colorIcon: '#fff' },
     { name: 'Connection', route: '/ConnectionPages', icon: 'wifi', colorIcon: '#fff' },
   ];
+
+  // Authentication Check
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const checkToken = async () => {
+      const token = await AsyncStorage.getItem("userToken");
+      setIsAuthenticated(!!token);
+    };
+    checkToken();
+  }, []);
+
+  if (isAuthenticated === null) return null; // loading
+
+  if (!isAuthenticated) {
+    return <Redirect href="/auth" />;
+  }
+
 
 
   return (
@@ -51,7 +70,7 @@ const HomePages = () => {
       </View>
 
       {/* Greeting Text */}
-      <View style={{ padding: 20, alignItems: 'center', gap: 4 }}>
+      <View style={styles.heroWrapper}>
         <Text style={{ color: '#333', fontSize: 22, fontWeight: 'bold', }}>
           Welcome To IOT App
         </Text>
@@ -107,7 +126,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,
     overflow: 'hidden',
-    
+
     shadowColor: '#000',
     shadowOpacity: 0.8,
     shadowOffset: { width: 2, height: 3 },
@@ -134,6 +153,12 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: 'bold',
   },
+  heroWrapper: {
+    paddingVertical: 30,
+    paddingHorizontal: 20,
+    alignItems: 'center',
+    gap: 4
+  },
   bgPattern: {
     height: Platform.OS === 'web' ? '100%' : 500,
     width: Platform.OS === 'web' ? '100%' : 500,
@@ -150,9 +175,8 @@ const styles = StyleSheet.create({
     right: 0,
     top: 20,
   },
-
   buttonsWrapper: {
-    padding: 20,
+    paddingHorizontal: 30,
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
@@ -168,7 +192,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8, // spacing between icon and text
+    gap: 4, // spacing between icon and text
   },
   btnText: {
     color: '#fff',
@@ -180,7 +204,6 @@ const styles = StyleSheet.create({
   },
   fullWidthCenter: {
     width: '100%',
-    marginTop: 10,
     alignSelf: 'center',
   },
 });

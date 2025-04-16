@@ -1,3 +1,4 @@
+import React from "react";
 import { Stack } from "expo-router";
 import { StatusBar } from "react-native";
 
@@ -5,7 +6,7 @@ export default function Layout() {
   return (
     <>
       <StatusBar barStyle="default" />
-      <Stack>
+      <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="MenuPages" options={{ headerShown: false }} />
         <Stack.Screen name="AccountPages" options={{ headerShown: false }} />
@@ -13,4 +14,4 @@ export default function Layout() {
       </Stack>
     </>
   );
-};
+}
