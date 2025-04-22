@@ -76,7 +76,7 @@ const WidgetPages: React.FC = () => {
     const AddWidgetSheet = () => (
         <View style={styles.sheetContainer}>
             <View style={styles.sheetHeader}>
-                <Text style={styles.sheetTitle}>Pilih Widget Mu!</Text>
+                <Text style={styles.sheetTitle}>Choose Your Widget!</Text>
                 <TouchableOpacity onPress={() => sheetAddWidgetRef.current?.close()} style={styles.sheetCloseButton}>
                     <Text style={styles.sheetCloseButtonText}>Close</Text>
                 </TouchableOpacity>
@@ -100,7 +100,7 @@ const WidgetPages: React.FC = () => {
     const NotificationSheet = () => (
         <View style={styles.sheetContainer}>
             <View style={styles.sheetHeader}>
-                <Text style={styles.sheetTitle}>Notifikasi</Text>
+                <Text style={styles.sheetTitle}>Notification</Text>
                 <TouchableOpacity onPress={() => sheetNotifRef.current?.close()} style={styles.sheetCloseButton}>
                     <Text style={styles.sheetCloseButtonText}>Close</Text>
                 </TouchableOpacity>
@@ -112,7 +112,7 @@ const WidgetPages: React.FC = () => {
     const InfoSheet = () => (
         <View style={styles.sheetContainer}>
             <View style={styles.sheetHeader}>
-                <Text style={styles.sheetTitle}>Informasi</Text>
+                <Text style={styles.sheetTitle}>Information</Text>
                 <TouchableOpacity onPress={() => sheetInfoRef.current?.close()} style={styles.sheetCloseButton}>
                     <Text style={styles.sheetCloseButtonText}>Close</Text>
                 </TouchableOpacity>

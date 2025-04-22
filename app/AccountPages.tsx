@@ -12,8 +12,8 @@ const AccountPages = () => {
     const router = useRouter();
 
     const dataAccountDummy = {
-        name: "M Rifqi Hamza",
-        email: "rifqihamza30@gmail.com",
+        name: "Jhon Doe",
+        email: "example@gmail.com",
         password: "********",
         role: "Admin",
         country: "indonesia",
@@ -31,9 +31,6 @@ const AccountPages = () => {
     };
     return (
         <SafeAreaView style={styles.safeArea}>
-
-
-
             {/* Profile Picture Section */}
             <View style={styles.containerImgProfile}>
                 <ImageBackground
@@ -47,7 +44,7 @@ const AccountPages = () => {
                     </TouchableOpacity>
                 </View>
                 <Image source={require("@/assets/images/avatar.jpg")} style={styles.imgProfile} />
-                <TouchableOpacity style={{ backgroundColor: "#fff", paddingVertical: 5, paddingHorizontal: 10, borderRadius: 10, marginTop: 10, }} onPress={() => console.log("Change Picture")}>
+                <TouchableOpacity style={styles.btnChangePict} onPress={() => console.log("Change Picture")}>
                     <AntDesign name="camera" size={28} color="black" />
                 </TouchableOpacity>
             </View>
@@ -60,7 +57,7 @@ const AccountPages = () => {
                         style={styles.btnEdit}
                         underlayColor={"#4338CA"}
                         onPress={() => router.push({ pathname: "/editProfile/editProfilePages" })}>
-                        <Text style={{ fontSize: 12, fontWeight: "500", textAlign: "center", color: "#fff" }}>Edit Profile</Text>
+                        <Text style={styles.btnEditTitle}>Edit Profile</Text>
                     </TouchableHighlight>
                 </View>
                 <View style={styles.dataRow}>
@@ -164,6 +161,13 @@ const styles = StyleSheet.create({
         borderColor: '#4338CA',
         resizeMode: "contain"
     },
+    btnChangePict: {
+        backgroundColor: "#fff",
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        borderRadius: 10,
+        marginTop: 10,
+    },
     dataProfile: {
         backgroundColor: '#fff',
         borderTopLeftRadius: 30,
@@ -192,6 +196,12 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 15,
         borderRadius: 10,
+    },
+    btnEditTitle: {
+        fontSize: 12,
+        fontWeight: "500",
+        textAlign: "center",
+        color: "#fff"
     },
     dataRow: {
         marginBottom: 15,

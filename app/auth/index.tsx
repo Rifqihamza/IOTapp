@@ -17,7 +17,6 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import CustomText from '@/components/customText';
 import AllertSuccess from '@/components/alertSuccess';
 import AllertFailed from '@/components/alertFailed';
 import Feather from '@expo/vector-icons/Feather';
@@ -71,7 +70,7 @@ export default function LoginPages() {
                         </View>
                         <View style={styles.form}>
                             <View style={styles.inputContainer}>
-                                <CustomText style={styles.label}>Email</CustomText>
+                                <Text style={styles.label}>Email</Text>
                                 <View style={styles.inputWrapper}>
                                     <TextInput
                                         value={email}
