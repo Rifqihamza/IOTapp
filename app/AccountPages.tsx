@@ -7,7 +7,7 @@ import AllertConfirm from '@/components/alertConfirm';
 
 // Icons
 import AntDesign from '@expo/vector-icons/AntDesign';
-import { get_user_data } from "@/api/account";
+import { get_user_data, logout } from "@/api/account";
 const AccountPages = () => {
     const [showAlert, setShowAlert] = useState(false);
     const [dataAccount, setDataAccount] = useState({
@@ -38,9 +38,11 @@ const AccountPages = () => {
     };
 
     const confirmLogout = async () => {
-        setShowAlert(false);
-        await AsyncStorage.removeItem('userToken');
-        router.replace('/auth');
+        logout().then(async (result) => {
+            setShowAlert(false);
+            await AsyncStorage.removeItem('userToken');
+            router.replace('/auth');
+        })
     };
     return (
         <SafeAreaView style={styles.safeArea}>
