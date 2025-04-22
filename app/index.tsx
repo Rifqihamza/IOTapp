@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -10,11 +10,11 @@ import {
 } from 'react-native';
 import { useRouter, Redirect } from 'expo-router';
 import Greeting from '@/components/greetings';
-import Ionicons from '@expo/vector-icons/Ionicons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-type RoutePath = '/MenuPages' | '/AccountPages' | '/ConnectionPages';
+type RoutePath = '/WidgetPages' | '/AccountPages' | '/ConnectionPages';
 
 interface ItemRoute {
   name: string;
@@ -27,7 +27,7 @@ const HomePages = () => {
   const router = useRouter();
 
   const itemRoute: ItemRoute[] = [
-    { name: 'Menu', route: '/MenuPages', icon: 'menu', colorIcon: '#fff' },
+    { name: 'Widgets', route: '/WidgetPages', icon: 'widgets', colorIcon: '#fff' },
     { name: 'Account', route: '/AccountPages', icon: 'person', colorIcon: '#fff' },
     { name: 'Connection', route: '/ConnectionPages', icon: 'wifi', colorIcon: '#fff' },
   ];
@@ -92,15 +92,12 @@ const HomePages = () => {
                 isFullWidth ? styles.fullWidthCenter : styles.halfWidth
               )}
               onPress={() => router.push(item.route)}
-              underlayColor="#3daed1"
-              activeOpacity={0.6}
+              underlayColor="#312E81"
+              activeOpacity={1}
             >
               <View style={styles.btnContent}>
-                <Ionicons
-                  name={item.icon as keyof typeof Ionicons.glyphMap}
-                  size={30}
-                  color={item.colorIcon}
-                />
+                <MaterialIcons 
+                name={item.icon as keyof typeof MaterialIcons.glyphMap} size={30} color={item.colorIcon} />
                 <Text style={styles.btnText}>{item.name}</Text>
               </View>
             </TouchableHighlight>
@@ -116,10 +113,10 @@ export default HomePages;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#fff',
   },
   greetingStyle: {
-    backgroundColor: '#4dc6e8',
+    backgroundColor: '#3730A3',
     paddingVertical: 30,
     paddingHorizontal: 20,
     height: '30%',
@@ -127,9 +124,9 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 30,
     overflow: 'hidden',
 
-    shadowColor: '#000',
-    shadowOpacity: 0.8,
-    shadowOffset: { width: 2, height: 3 },
+    shadowColor: '#aeaeae',
+    shadowOpacity: 0.5,
+    shadowOffset: { width: 2, height: 5 },
     shadowRadius: 5,
     elevation: 10,
 
@@ -166,7 +163,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     zIndex: -1,
-    opacity: 0.4,
+    opacity: 0.9,
   },
   waveImage: {
     width: 250,
@@ -183,7 +180,7 @@ const styles = StyleSheet.create({
     rowGap: 10,
   },
   routeBtn: {
-    backgroundColor: '#4dc6e8',
+    backgroundColor: '#3730A3',
     padding: 20,
     borderRadius: 10,
     alignItems: 'center',

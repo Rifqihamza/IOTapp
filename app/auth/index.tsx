@@ -7,7 +7,7 @@ import {
     SafeAreaView,
     StyleSheet,
     Image,
-    Alert,
+    ActivityIndicator,
     Dimensions,
     KeyboardAvoidingView,
     Platform,
@@ -17,20 +17,41 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
+import Feather from '@expo/vector-icons/Feather';
+import AllertSuccess from '@/components/alertSuccess';
+import AllertFailed from '@/components/alertFailed';
 
 export default function LoginPages() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [successVisible, setSuccessVisible] = useState(false);
+    const [failedVisible, setFailedVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(false)
     const router = useRouter();
 
-    const handleLogin = async () => {
-        if (email === 'admin' && password === '1234') {
-            await AsyncStorage.setItem('userToken', 'example-token');
-            router.replace('/'); // Ganti halaman ke halaman utama
-        } else {
-            Alert.alert('Login gagal', 'Email atau password salah');
-        }
+    const handleLogin = () => {
+        setIsLoading(true); // set loading true sebelum proses login
+        setTimeout(() => {  // Simulasi waktu loading (ganti dengan request asli jika perlu)
+            if (email === 'admin@gmail.com' && password === '1234') {
+                setSuccessVisible(true); // tampilkan alert sukses
+            } else {
+                setFailedVisible(true); // tampilkan alert gagal
+                setEmail('');
+                setPassword('');
+            }
+            setIsLoading(false); // set loading false setelah proses selesai
+        }, 2000); // Simulasi delay 2 detik
     };
+
+    const handleConfirmSuccess = async () => {
+        setSuccessVisible(false);
+        await AsyncStorage.setItem('userToken', 'example-token');
+        router.replace('/');
+    };
+
+    const handleRegist = () => {
+        console.log("Regist Pressed")
+    }
 
     return (
         <SafeAreaView style={styles.safeArea}>
@@ -42,42 +63,82 @@ export default function LoginPages() {
                     <View style={styles.container}>
                         <View style={styles.imgContainer}>
                             <Image
-                                source={require('@/assets/images/appLogo-2.png')}
-                                style={[styles.logo,]}
+                                source={require('@/assets/images/appLogo/appLogo-2x.png')}
+                                style={styles.logo}
                                 resizeMode="contain"
                             />
                         </View>
                         <View style={styles.form}>
-                            <View style={{ position: "relative" }}>
+                            <View style={styles.inputContainer}>
                                 <Text style={styles.label}>Email</Text>
-                                <TextInput
-                                    value={email}
-                                    onChangeText={setEmail}
-                                    style={styles.input}
-                                    autoCapitalize="none"
-                                />
+                                <View style={styles.inputWrapper}>
+                                    <TextInput
+                                        value={email}
+                                        onChangeText={setEmail}
+                                        style={styles.input}
+                                        autoCapitalize="none"
+                                        inputMode='email'
+                                    />
+                                    <Feather name="mail" size={24} color="#777" style={styles.inputIcon} />
+                                </View>
                             </View>
-                            <View>
+                            <View style={styles.inputContainer}>
                                 <Text style={styles.label}>Password</Text>
-                                <TextInput
-                                    value={password}
-                                    onChangeText={setPassword}
-                                    secureTextEntry
-                                    style={styles.input}
-                                />
+                                <View style={styles.inputWrapper}>
+                                    <TextInput
+                                        value={password}
+                                        onChangeText={setPassword}
+                                        secureTextEntry
+                                        style={styles.input}
+                                    />
+                                    <Feather name="lock" size={24} color="#777" style={styles.inputIcon} />
+                                </View>
                             </View>
                             <View style={styles.buttonWrapper}>
-                                <TouchableHighlight style={styles.button} onPress={handleLogin} >
-                                    <Text style={styles.buttonText}>Login</Text>
-                                </TouchableHighlight>
+                                {/* Login Button */}
+                                <View style={styles.buttonWrapper}>
+                                    {/* Login Button */}
+                                    <TouchableHighlight style={styles.button} underlayColor={"#312E81"} onPress={handleLogin} disabled={isLoading}>
+                                        <View style={styles.buttonContent}>
+                                            {isLoading ? (
+                                                <ActivityIndicator size="small" color="#fff" />
+                                            ) : (
+                                                <Text style={styles.buttonText}>Login</Text>
+                                            )}
+                                        </View>
+                                    </TouchableHighlight>
+                                </View>
+
+                                {/* Alert */}
+                                <AllertSuccess
+                                    visible={successVisible}
+                                    message="Login Berhasil"
+                                    onConfirm={handleConfirmSuccess}
+                                />
+
+                                <AllertFailed
+                                    visible={failedVisible}
+                                    message="Login Gagal"
+                                    onConfirm={() => setFailedVisible(false)}
+                                />
+                                {/* End Alert */}
+
+                                <View style={styles.registerPrompt}>
+                                    <Text style={styles.registerText}>Belum Punya Akun?</Text>
+                                    <TouchableHighlight underlayColor={"#fff"} onPress={() => handleRegist()}>
+                                        <Text style={styles.registerLink}>Buat Akun.</Text>
+                                    </TouchableHighlight>
+                                </View>
                             </View>
                         </View>
                     </View>
                 </KeyboardAvoidingView>
             </TouchableWithoutFeedback>
-        </SafeAreaView>
+        </SafeAreaView >
     );
 }
+
+const { width } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
     safeArea: {
@@ -86,7 +147,8 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        padding: 20,
+        padding: 40,
+        gap: 50,
     },
     imgContainer: {
         justifyContent: "center",
@@ -98,38 +160,58 @@ const styles = StyleSheet.create({
     },
     form: {
         width: '100%',
-        gap: 10,
+        gap: 30,
+    },
+    inputContainer: {
+        position: "relative",
     },
     label: {
-        fontSize: 16,
+        fontSize: width * 0.050,
         fontWeight: '600',
-        marginBottom: 6,
-        position: "absolute",
-        top: -12,
-        left: 20,
+        marginBottom: 4,
+        position: 'absolute',
+        top: -width * 0.030,
+        left: width * 0.05,
         zIndex: 10,
-        backgroundColor: "#fff"
+        backgroundColor: '#fff',
+        paddingHorizontal: 4,
+    },
+    inputWrapper: {
+        position: "relative",
+        flexDirection: "row",
+        alignItems: 'center',
     },
     input: {
         borderRadius: 10,
         paddingHorizontal: 15,
         paddingVertical: 20,
-        marginBottom: 20,
+        paddingRight: 50, // Make room for the icon
         backgroundColor: "#fff",
         borderColor: "#000",
         borderWidth: 0.5,
         elevation: 5,
-        shadowColor: "#000",
-        shadowOpacity: 0.5,
+        shadowColor: "#aaa",
+        shadowOpacity: 0.2,
         shadowOffset: { width: 2, height: 3 },
-        
+        fontSize: 20,
+        width: "100%",
+    },
+    inputIcon: {
+        position: "absolute",
+        right: 15,
     },
     buttonWrapper: {
-        width: "100%"
+        width: "100%",
+        marginTop: 10,
+    },
+    buttonContent: {
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center",
     },
     button: {
-        backgroundColor: "#4dc6e8",
-        padding: 20,
+        backgroundColor: "#3730A3",
+        padding: 15,
         borderRadius: 10,
     },
     buttonText: {
@@ -139,5 +221,28 @@ const styles = StyleSheet.create({
         textTransform: "uppercase",
         letterSpacing: 2,
         color: "#fff"
+    },
+    registerPrompt: {
+        flexDirection: "row",
+        gap: 5,
+        marginTop: 15,
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    registerText: {
+        fontSize: 18,
+        fontWeight: "500"
+    },
+    registerLink: {
+        fontSize: 18,
+        fontWeight: "500",
+        color: "#4ca4f5"
+    },
+    loadingContainer: {
+        position: "absolute",
+
+        backgroundColor: "#000",
+        padding: 20,
+        zIndex: 10,
     }
 });

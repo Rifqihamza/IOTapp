@@ -1,53 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, TouchableHighlight, Alert, BackHandler } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import AllertConfirm from '@/components/alertConfirm';
 
 // Icons
 import AntDesign from '@expo/vector-icons/AntDesign';
 const AccountPages = () => {
+    const [showAlert, setShowAlert] = useState(false)
     const router = useRouter();
 
     const dataAccountDummy = {
         name: "M Rifqi Hamza",
         email: "rifqihamza30@gmail.com",
-        password: "********"
+        password: "********",
+        role: "Admin",
+        country: "indonesia",
+        timezone: "Asia/Jakarta"
     };
 
-    const handleLogout = async () => {
-        Alert.alert(
-            "Logout",
-            "Apakah kamu yakin ingin keluar?",
-            [
-                {
-                    text: "Batal",
-                    style: "cancel"
-                },
-                {
-                    text: "Logout",
-                    style: "destructive",
-                    onPress: async () => {
-                        await AsyncStorage.removeItem("userToken");
-                        router.replace("/auth");
-                    }
-                }
-            ]
-        )
+    const handleLogout = () => {
+        setShowAlert(true);
+    };
+
+    const confirmLogout = async () => {
+        setShowAlert(false);
+        await AsyncStorage.removeItem('userToken');
+        router.replace('/auth');
     };
     return (
         <SafeAreaView style={styles.safeArea}>
 
-            {/* Back Button */}
-            <View style={styles.backButtonWrapper}>
-                <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
-                    <AntDesign name="left" size={20} color="white" />
-                    <Text style={styles.backText}>Kembali</Text>
-                </TouchableOpacity>
-            </View>
+
 
             {/* Profile Picture Section */}
             <View style={styles.containerImgProfile}>
+                {/* Back Button */}
+                <View style={styles.backButtonWrapper}>
+                    <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+                        <AntDesign name="left" size={20} color="white" />
+                    </TouchableOpacity>
+                </View>
                 <Image source={require("@/assets/images/avatar.jpg")} style={styles.imgProfile} />
                 <TouchableOpacity style={{ marginTop: 10 }} onPress={() => console.log("Change Picture")}>
                     <AntDesign name="camera" size={28} color="white" />
@@ -56,7 +50,12 @@ const AccountPages = () => {
 
             {/* Data Profile Section */}
             <View style={styles.dataProfile}>
-                <Text style={styles.headerText}>Profile Kamu!</Text>
+                <View style={styles.headerTitle}>
+                    <Text style={styles.headerText}>Profile Kamu!</Text>
+                    <TouchableHighlight style={{ backgroundColor: "#3730A3", paddingVertical: 10, paddingHorizontal: 15, borderRadius: 10, }} underlayColor={"#4338CA"} onPress={() => router.push("/")}>
+                        <Text style={{ fontSize: 12, fontWeight: "500", textAlign: "center", color: "#fff" }}>Edit Profile</Text>
+                    </TouchableHighlight>
+                </View>
                 <View style={styles.dataRow}>
                     <Text style={styles.label}>Name</Text>
                     <Text style={styles.value}>{dataAccountDummy.name}</Text>
@@ -69,14 +68,47 @@ const AccountPages = () => {
                     <Text style={styles.label}>Password</Text>
                     <Text style={styles.value}>{dataAccountDummy.password}</Text>
                 </View>
-                <TouchableHighlight style={{ backgroundColor: "#4dc6e8", padding: 15, borderRadius: 10, marginTop: 30 }} onPress={() => router.push("/")}>
-                    <Text style={{ fontSize: 18, fontWeight: "500", textAlign: "center", color: "#fff" }}>Edit Profile</Text>
-                </TouchableHighlight>
+                <View style={styles.dataRow}>
+                    <Text style={styles.label}>Role</Text>
+                    <Text style={styles.value}>{dataAccountDummy.role}</Text>
+                </View>
+                <View style={styles.dataRow}>
+                    <Text style={styles.label}>Country</Text>
+                    <Text style={styles.value}>{dataAccountDummy.country}</Text>
+                </View>
+                <View style={styles.dataRow}>
+                    <Text style={styles.label}>Timezone</Text>
+                    <Text style={styles.value}>{dataAccountDummy.timezone}</Text>
+                </View>
             </View>
             <View style={styles.logoutButtonWrapper}>
-                <TouchableHighlight style={{ backgroundColor: "#4dc6e8", padding: 15, borderRadius: 10, marginTop: 30 }} onPress={() => handleLogout()}>
-                    <Text style={{ fontSize: 18, fontWeight: "500", textAlign: "center", color: "#fff" }}>Logout</Text>
+                <TouchableHighlight
+                    style={{
+                        backgroundColor: "#3730A3",
+                        padding: 15,
+                        borderRadius: 10,
+                        marginTop: 30
+                    }}
+                    underlayColor={"#4338CA"}
+                    onPress={handleLogout} // langsung aja, ga perlu arrow function kalau ga ada parameter
+                >
+                    <Text style={{
+                        fontSize: 18,
+                        fontWeight: "500",
+                        textAlign: "center",
+                        color: "#fff"
+                    }}>
+                        Logout
+                    </Text>
                 </TouchableHighlight>
+
+                <AllertConfirm
+                    visible={showAlert}
+                    message="logout"
+                    onConfirm={confirmLogout}
+                    onCancel={() => setShowAlert(false)}
+                />
+
             </View>
 
         </SafeAreaView>
@@ -91,7 +123,7 @@ const styles = StyleSheet.create({
     },
     backButtonWrapper: {
         position: 'absolute',
-        top: 10,
+        top: 0,
         left: 10,
         zIndex: 1,
     },
@@ -99,25 +131,22 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         gap: 10,
-        padding: 10,
-    },
-    backText: {
-        fontSize: 20,
-        fontWeight: '600',
-        color: '#fff',
+        paddingVertical: 20,
+        paddingHorizontal: 10,
     },
     containerImgProfile: {
         flex: 1,
-        backgroundColor: '#4dc6e8',
+        backgroundColor: '#312E81',
         alignItems: "center",
-        paddingVertical: 75
+        paddingVertical: 50,
+        position: "relative"
     },
     imgProfile: {
         width: 125,
         height: 125,
         borderRadius: 100,
         borderWidth: 4,
-        borderColor: '#3c98be',
+        borderColor: '#4338CA',
         resizeMode: "contain"
     },
     dataProfile: {
@@ -126,17 +155,22 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 30,
         paddingTop: 30,
         paddingHorizontal: 20,
-        height: "70%",
+        height: "75%",
         position: 'absolute',
         bottom: 0,
         left: 0,
         right: 0,
     },
+    headerTitle: {
+        flexDirection: "row",
+        justifyContent: 'space-between',
+        alignItems: "center",
+        marginBottom: 20
+    },
     headerText: {
         fontSize: 22,
         fontWeight: 'bold',
-        color: '#333',
-        marginBottom: 20,
+        color: '#000',
     },
     dataRow: {
         marginBottom: 15,
@@ -146,11 +180,11 @@ const styles = StyleSheet.create({
     },
     label: {
         fontSize: 16,
-        color: '#999',
+        color: '#aaa',
     },
     value: {
         fontSize: 18,
-        color: '#333',
+        color: '#000',
         fontWeight: '500',
     },
     logoutButtonWrapper: {

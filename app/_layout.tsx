@@ -8,7 +8,7 @@ export default function Layout() {
       <StatusBar barStyle="default" />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="MenuPages" options={{ headerShown: false }} />
+        <Stack.Screen name="WidgetPages" options={{ headerShown: false }} />
         <Stack.Screen name="AccountPages" options={{ headerShown: false }} />
         <Stack.Screen name="ConnectionPages" options={{ headerShown: false }} />
       </Stack>
