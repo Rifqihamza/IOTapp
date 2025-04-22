@@ -11,6 +11,7 @@ export default function Layout() {
         <Stack.Screen name="WidgetPages" options={{ headerShown: false }} />
         <Stack.Screen name="AccountPages" options={{ headerShown: false }} />
         <Stack.Screen name="ConnectionPages" options={{ headerShown: false }} />
+        <Stack.Screen name="editProfile/editProfilePages" options={{ headerShown: false }} />
       </Stack>
     </>
   );

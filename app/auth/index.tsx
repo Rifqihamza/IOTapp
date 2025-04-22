@@ -17,9 +17,10 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import Feather from '@expo/vector-icons/Feather';
+import CustomText from '@/components/customText';
 import AllertSuccess from '@/components/alertSuccess';
 import AllertFailed from '@/components/alertFailed';
+import Feather from '@expo/vector-icons/Feather';
 
 export default function LoginPages() {
     const [email, setEmail] = useState('');
@@ -70,7 +71,7 @@ export default function LoginPages() {
                         </View>
                         <View style={styles.form}>
                             <View style={styles.inputContainer}>
-                                <Text style={styles.label}>Email</Text>
+                                <CustomText style={styles.label}>Email</CustomText>
                                 <View style={styles.inputWrapper}>
                                     <TextInput
                                         value={email}
@@ -240,9 +241,7 @@ const styles = StyleSheet.create({
     },
     loadingContainer: {
         position: "absolute",
-
         backgroundColor: "#000",
-        padding: 20,
         zIndex: 10,
     }
 });
