@@ -8,7 +8,7 @@ import AllertConfirm from '@/components/alertConfirm';
 // Icons
 import AntDesign from '@expo/vector-icons/AntDesign';
 const AccountPages = () => {
-    const [showAlert, setShowAlert] = useState(false)
+    const [showAlert, setShowAlert] = useState(false);
     const router = useRouter();
 
     const dataAccountDummy = {
@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
         borderRadius: 100,
         borderWidth: 4,
         borderColor: '#4338CA',
-        resizeMode: "contain"
+        overflow: 'hidden', // Ensure compatibility with ImageStyle
     },
     dataProfile: {
         backgroundColor: '#fff',
@@ -196,3 +196,4 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     }
 });
+ 

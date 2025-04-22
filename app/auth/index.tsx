@@ -1,5 +1,5 @@
 // app/auth/index.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     View,
     Text,
@@ -20,33 +20,87 @@ import { useRouter } from 'expo-router';
 import Feather from '@expo/vector-icons/Feather';
 import AllertSuccess from '@/components/alertSuccess';
 import AllertFailed from '@/components/alertFailed';
+import { request_login, request_token } from "@/api/account";
 
 export default function LoginPages() {
     const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [token, setToken] = useState('');
     const [successVisible, setSuccessVisible] = useState(false);
+    const [successMessage, setSuccessMessage] = useState("Login Berhasil!");
     const [failedVisible, setFailedVisible] = useState(false);
+    const [failedMessage, setFailedMessage] = useState("Login Gagal!");
     const [isLoading, setIsLoading] = useState(false)
+    const [showInputToken, setShowInputToken] = useState(false);
+    const [successLogin, setSuccessLogin] = useState(false);
+
+    const [verificationId, setVerificationId] = useState("");
+    
     const router = useRouter();
+
+    useEffect(() => {
+        if(showInputToken) {
+            setShowInputToken(false);
+        }
+    }, [email])
+    
+    const handleGetToken = () => {
+        setIsLoading(true); // set loading true sebelum proses login
+        request_token(email).then((result) => {
+            if(result.success) {
+                setVerificationId(result.data.data.id); // Dapatkan ID untuk verifikasi
+                setSuccessVisible(true); // tampilkan alert sukses
+                setSuccessMessage("Tolong cek email anda."); // Update pesan sukses
+                setIsLoading(false); // set loading false setelah proses selesai
+                setShowInputToken(true);
+                setTimeout(() => {
+                    setSuccessVisible(false); // tampilkan alert sukses
+                }, 1000);
+            }
+            else {
+                setFailedVisible(true); // tampilkan alert error
+                setFailedMessage("Terjadi kesalahan."); // Update pesan error
+                setIsLoading(false); // set loading false setelah proses selesai
+                setShowInputToken(false);
+                setTimeout(() => {
+                    setFailedVisible(false); // hilangkan alert error
+                }, 1000);
+            }
+        }).catch(error => {
+            setFailedVisible(true); // tampilkan alert error
+            setFailedMessage("Terjadi error."); // Update pesan error
+            setIsLoading(false); // set loading false setelah proses selesai
+            setShowInputToken(false);
+            setTimeout(() => {
+                setFailedVisible(false); // hilangkan alert error
+            }, 1000);
+        });
+    };
 
     const handleLogin = () => {
         setIsLoading(true); // set loading true sebelum proses login
-        setTimeout(() => {  // Simulasi waktu loading (ganti dengan request asli jika perlu)
-            if (email === 'admin@gmail.com' && password === '1234') {
+        request_login(token, verificationId).then(result => {
+            if(result.success) {
                 setSuccessVisible(true); // tampilkan alert sukses
-            } else {
-                setFailedVisible(true); // tampilkan alert gagal
-                setEmail('');
-                setPassword('');
+                setSuccessMessage("Berhasil login!"); // Update pesan sukses
+                setIsLoading(false); // set loading false setelah proses selesai
+                setShowInputToken(false);
+                setSuccessLogin(true);
             }
-            setIsLoading(false); // set loading false setelah proses selesai
-        }, 2000); // Simulasi delay 2 detik
-    };
+            else {
+                setFailedVisible(true); // tampilkan alert sukses
+                setFailedMessage("Terjadi kesalahan!"); // Update pesan sukses
+                setIsLoading(false); // set loading false setelah proses selesai
+                setShowInputToken(false);
+            }
+        })
+    }
 
     const handleConfirmSuccess = async () => {
-        setSuccessVisible(false);
-        await AsyncStorage.setItem('userToken', 'example-token');
-        router.replace('/');
+        if(successLogin) {
+            setSuccessVisible(false);
+            await AsyncStorage.setItem('userToken', 'example-token');
+            router.replace('/');
+        }
     };
 
     const handleRegist = () => {
@@ -82,12 +136,12 @@ export default function LoginPages() {
                                     <Feather name="mail" size={24} color="#777" style={styles.inputIcon} />
                                 </View>
                             </View>
-                            <View style={styles.inputContainer}>
+                            <View style={[styles.inputContainer, showInputToken ? styles.visible : styles.hide]}>
                                 <Text style={styles.label}>Password</Text>
                                 <View style={styles.inputWrapper}>
                                     <TextInput
-                                        value={password}
-                                        onChangeText={setPassword}
+                                        value={token}
+                                        onChangeText={setToken}
                                         secureTextEntry
                                         style={styles.input}
                                     />
@@ -98,12 +152,12 @@ export default function LoginPages() {
                                 {/* Login Button */}
                                 <View style={styles.buttonWrapper}>
                                     {/* Login Button */}
-                                    <TouchableHighlight style={styles.button} underlayColor={"#312E81"} onPress={handleLogin} disabled={isLoading}>
+                                    <TouchableHighlight style={styles.button} underlayColor={"#312E81"} onPress={(showInputToken ? handleLogin : handleGetToken)} disabled={isLoading}>
                                         <View style={styles.buttonContent}>
                                             {isLoading ? (
                                                 <ActivityIndicator size="small" color="#fff" />
                                             ) : (
-                                                <Text style={styles.buttonText}>Login</Text>
+                                                <Text style={styles.buttonText}>{showInputToken ? "Login" : "Dapatkan Token"}</Text>
                                             )}
                                         </View>
                                     </TouchableHighlight>
@@ -112,13 +166,13 @@ export default function LoginPages() {
                                 {/* Alert */}
                                 <AllertSuccess
                                     visible={successVisible}
-                                    message="Login Berhasil"
+                                    message={successMessage}
                                     onConfirm={handleConfirmSuccess}
                                 />
 
                                 <AllertFailed
                                     visible={failedVisible}
-                                    message="Login Gagal"
+                                    message={failedMessage}
                                     onConfirm={() => setFailedVisible(false)}
                                 />
                                 {/* End Alert */}
@@ -244,5 +298,11 @@ const styles = StyleSheet.create({
         backgroundColor: "#000",
         padding: 20,
         zIndex: 10,
+    },
+    hide: {
+        opacity: 0
+    },
+    visible: {
+        opacity: 1
     }
 });
