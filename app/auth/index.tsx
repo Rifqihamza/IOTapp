@@ -137,7 +137,7 @@ export default function LoginPages() {
                                 </View>
                             </View>
                             <View style={[styles.inputContainer, showInputToken ? styles.visible : styles.hide]}>
-                                <Text style={styles.label}>Password</Text>
+                                <Text style={styles.label}>Token</Text>
                                 <View style={styles.inputWrapper}>
                                     <TextInput
                                         value={token}

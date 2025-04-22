@@ -83,6 +83,14 @@ const AccountPages = () => {
                     <Text style={styles.label}>Email</Text>
                     <Text style={styles.value}>{dataAccount.email}</Text>
                 </View>
+                <View style={styles.dataRow}>
+                    <Text style={styles.label}>Devices</Text>
+                    <Text style={styles.value}>{dataAccount.devices_count}</Text>
+                </View>
+                <View style={styles.dataRow}>
+                    <Text style={styles.label}>Controllables</Text>
+                    <Text style={styles.value}>{dataAccount.controllables_count}</Text>
+                </View>
             </View>
             <View style={styles.logoutButtonWrapper}>
                 <TouchableHighlight
