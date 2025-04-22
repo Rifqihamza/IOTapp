@@ -17,9 +17,9 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
-import Feather from '@expo/vector-icons/Feather';
 import AllertSuccess from '@/components/alertSuccess';
 import AllertFailed from '@/components/alertFailed';
+import Feather from '@expo/vector-icons/Feather';
 import { request_login, request_token } from "@/api/account";
 
 export default function LoginPages() {
@@ -294,9 +294,7 @@ const styles = StyleSheet.create({
     },
     loadingContainer: {
         position: "absolute",
-
         backgroundColor: "#000",
-        padding: 20,
         zIndex: 10,
     },
     hide: {

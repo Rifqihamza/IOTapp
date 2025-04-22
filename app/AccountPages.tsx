@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, TouchableHighlight, Alert, BackHandler } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, TouchableHighlight, Platform, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -12,8 +12,8 @@ const AccountPages = () => {
     const router = useRouter();
 
     const dataAccountDummy = {
-        name: "M Rifqi Hamza",
-        email: "rifqihamza30@gmail.com",
+        name: "Jhon Doe",
+        email: "example@gmail.com",
         password: "********",
         role: "Admin",
         country: "indonesia",
@@ -31,11 +31,12 @@ const AccountPages = () => {
     };
     return (
         <SafeAreaView style={styles.safeArea}>
-
-
-
             {/* Profile Picture Section */}
             <View style={styles.containerImgProfile}>
+                <ImageBackground
+                    source={require('@/assets/images/circuitPattern.png')}
+                    style={styles.bgPattern}
+                />
                 {/* Back Button */}
                 <View style={styles.backButtonWrapper}>
                     <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
@@ -43,8 +44,8 @@ const AccountPages = () => {
                     </TouchableOpacity>
                 </View>
                 <Image source={require("@/assets/images/avatar.jpg")} style={styles.imgProfile} />
-                <TouchableOpacity style={{ marginTop: 10 }} onPress={() => console.log("Change Picture")}>
-                    <AntDesign name="camera" size={28} color="white" />
+                <TouchableOpacity style={styles.btnChangePict} onPress={() => console.log("Change Picture")}>
+                    <AntDesign name="camera" size={28} color="black" />
                 </TouchableOpacity>
             </View>
 
@@ -52,8 +53,11 @@ const AccountPages = () => {
             <View style={styles.dataProfile}>
                 <View style={styles.headerTitle}>
                     <Text style={styles.headerText}>Profile Kamu!</Text>
-                    <TouchableHighlight style={{ backgroundColor: "#3730A3", paddingVertical: 10, paddingHorizontal: 15, borderRadius: 10, }} underlayColor={"#4338CA"} onPress={() => router.push("/")}>
-                        <Text style={{ fontSize: 12, fontWeight: "500", textAlign: "center", color: "#fff" }}>Edit Profile</Text>
+                    <TouchableHighlight
+                        style={styles.btnEdit}
+                        underlayColor={"#4338CA"}
+                        onPress={() => router.push({ pathname: "/editProfile/editProfilePages" })}>
+                        <Text style={styles.btnEditTitle}>Edit Profile</Text>
                     </TouchableHighlight>
                 </View>
                 <View style={styles.dataRow}>
@@ -141,13 +145,28 @@ const styles = StyleSheet.create({
         paddingVertical: 50,
         position: "relative"
     },
+    bgPattern: {
+        height: Platform.OS === 'web' ? '100%' : 500,
+        width: Platform.OS === 'web' ? '100%' : 500,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        opacity: 0.9,
+    },
     imgProfile: {
-        width: 125,
-        height: 125,
+        width: 150,
+        height: 150,
         borderRadius: 100,
         borderWidth: 4,
         borderColor: '#4338CA',
         overflow: 'hidden', // Ensure compatibility with ImageStyle
+    },
+    btnChangePict: {
+        backgroundColor: "#fff",
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        borderRadius: 10,
+        marginTop: 10,
     },
     dataProfile: {
         backgroundColor: '#fff',
@@ -155,7 +174,7 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 30,
         paddingTop: 30,
         paddingHorizontal: 20,
-        height: "75%",
+        height: "70%",
         position: 'absolute',
         bottom: 0,
         left: 0,
@@ -171,6 +190,18 @@ const styles = StyleSheet.create({
         fontSize: 22,
         fontWeight: 'bold',
         color: '#000',
+    },
+    btnEdit: {
+        backgroundColor: "#3730A3",
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        borderRadius: 10,
+    },
+    btnEditTitle: {
+        fontSize: 12,
+        fontWeight: "500",
+        textAlign: "center",
+        color: "#fff"
     },
     dataRow: {
         marginBottom: 15,
@@ -188,7 +219,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
     },
     logoutButtonWrapper: {
-        position: 'fixed',
+        position: 'absolute',
         bottom: 20,
         left: 0,
         right: 0,

@@ -38,11 +38,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         padding: 24,
         borderRadius: 12,
-        width: '80%',
+        width: '70%',
         alignItems: 'center',
     },
     message: {
-        fontSize: 16,
+        fontSize: 20,
         marginBottom: 20,
         textAlign: 'center',
     },
@@ -58,12 +58,14 @@ const styles = StyleSheet.create({
     },
     confirmBtn: {
         backgroundColor: '#3730A3',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
+        paddingVertical: 15,
+        paddingHorizontal: 30,
         borderRadius: 8,
     },
     btnText: {
         color: '#fff',
+        fontSize: 16,
         fontWeight: 'bold',
+        textAlign: "center"
     },
 });

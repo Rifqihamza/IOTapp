@@ -75,7 +75,7 @@ const HomePages = () => {
           Welcome To IOT App
         </Text>
         <Text style={{ color: '#666', fontSize: 18, }}>
-          Pilih tombol dibawah untuk melanjutkan
+          Select the option below to continue
         </Text>
       </View>
 
@@ -96,8 +96,8 @@ const HomePages = () => {
               activeOpacity={1}
             >
               <View style={styles.btnContent}>
-                <MaterialIcons 
-                name={item.icon as keyof typeof MaterialIcons.glyphMap} size={30} color={item.colorIcon} />
+                <MaterialIcons
+                  name={item.icon as keyof typeof MaterialIcons.glyphMap} size={30} color={item.colorIcon} />
                 <Text style={styles.btnText}>{item.name}</Text>
               </View>
             </TouchableHighlight>
