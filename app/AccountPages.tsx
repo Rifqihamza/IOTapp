@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, TouchableHighlight, Platform, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -7,18 +7,31 @@ import AllertConfirm from '@/components/alertConfirm';
 
 // Icons
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { get_user_data } from "@/api/account";
 const AccountPages = () => {
     const [showAlert, setShowAlert] = useState(false);
+    const [dataAccount, setDataAccount] = useState({
+        username: "Jhon Doe",
+        email: "example@gmail.com",
+        devices_count: 0,
+        controllables_count: 0
+    });
     const router = useRouter();
 
-    const dataAccountDummy = {
-        name: "Jhon Doe",
-        email: "example@gmail.com",
-        password: "********",
-        role: "Admin",
-        country: "indonesia",
-        timezone: "Asia/Jakarta"
-    };
+    useEffect(() => {
+        get_user_data().then((result) => {
+            if(result.success) {
+                setDataAccount(result.data.data);
+            }
+            else {
+                if(result.error == "010") {
+                    router.replace("/auth");
+                }
+            }
+        }).catch((error) => {
+            console.error(error);
+        })
+    }, []);
 
     const handleLogout = () => {
         setShowAlert(true);
@@ -62,27 +75,11 @@ const AccountPages = () => {
                 </View>
                 <View style={styles.dataRow}>
                     <Text style={styles.label}>Name</Text>
-                    <Text style={styles.value}>{dataAccountDummy.name}</Text>
+                    <Text style={styles.value}>{dataAccount.username}</Text>
                 </View>
                 <View style={styles.dataRow}>
                     <Text style={styles.label}>Email</Text>
-                    <Text style={styles.value}>{dataAccountDummy.email}</Text>
-                </View>
-                <View style={styles.dataRow}>
-                    <Text style={styles.label}>Password</Text>
-                    <Text style={styles.value}>{dataAccountDummy.password}</Text>
-                </View>
-                <View style={styles.dataRow}>
-                    <Text style={styles.label}>Role</Text>
-                    <Text style={styles.value}>{dataAccountDummy.role}</Text>
-                </View>
-                <View style={styles.dataRow}>
-                    <Text style={styles.label}>Country</Text>
-                    <Text style={styles.value}>{dataAccountDummy.country}</Text>
-                </View>
-                <View style={styles.dataRow}>
-                    <Text style={styles.label}>Timezone</Text>
-                    <Text style={styles.value}>{dataAccountDummy.timezone}</Text>
+                    <Text style={styles.value}>{dataAccount.email}</Text>
                 </View>
             </View>
             <View style={styles.logoutButtonWrapper}>

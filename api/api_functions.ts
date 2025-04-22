@@ -1,4 +1,4 @@
-const api_base_url: string = "http://192.168.9.134:3000";
+const api_base_url: string = "http://192.168.1.8:3000";
 
 export async function send_api(endpoint: string, data: object | null = null) {
     try {
@@ -18,10 +18,17 @@ export async function send_api(endpoint: string, data: object | null = null) {
         console.log("RESPONSE:");
         console.log(response);
         
+        const error = response.error_code;
+        
+        // If there's an error
+        if(error) {
+            console.warn(error);
+        }
+        
         return {
             success: raw_response.ok,
             data: response,
-            error: response.error_code ? response.message : null
+            error: error
         };
     }
     catch(error) {
