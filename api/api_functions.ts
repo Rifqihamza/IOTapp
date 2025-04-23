@@ -1,4 +1,4 @@
-const api_base_url: string = "http://192.168.1.8:3000";
+const api_base_url: string = "http://192.168.9.134:3000";
 
 export async function send_api(endpoint: string, data: object | null = null) {
     try {

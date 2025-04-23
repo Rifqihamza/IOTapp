@@ -4,15 +4,17 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { get_user_devices } from "@/api/device";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Icons
-const AccountPages = () => {
+const DeviceListPages = () => {
     const router = useRouter();
 
     const [devicesData, setDevicesData] = useState([
         {
-            device_name: "",
-            created_at: "",
+            device_id: "",
+            device_name: "Loading..",
+            created_at: "Loading..",
             connected_controllables: 0
         }
     ]);
@@ -49,7 +51,10 @@ const AccountPages = () => {
                         return <TouchableHighlight
                         key={index}
                         style={{ backgroundColor: "#3730A3", borderRadius: 15, margin: 10, padding: 20 }}
-                        onPress={() => {}}>
+                        onPress={async () => {
+                            await AsyncStorage.setItem("device_id", deviceData.device_id);
+                            router.push("/WidgetPages");
+                        }}>
                             <View>
                                 <Text style={{ color: "white",fontWeight: "bold", fontSize: 24 }} >{deviceData.device_name}</Text>
                                 <Text style={{ color: "white",fontSize: 18 }} >{deviceData.connected_controllables} connected controllables</Text>
@@ -63,7 +68,7 @@ const AccountPages = () => {
     );
 };
 
-export default AccountPages;
+export default DeviceListPages;
 
 const styles = StyleSheet.create({
     safeArea: {
