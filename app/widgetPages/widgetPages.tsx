@@ -9,6 +9,12 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Entypo from '@expo/vector-icons/Entypo';
+import ControllableSwitch from "@/components/controllables/switch";
+import ControllableSlider from "@/components/controllables/slider";
+import ControllableGauge from '../../components/controllables/gauge';
+import ControllableCounter from "@/components/controllables/counter";
+import ControllableLED from '../../components/controllables/led';
+import ControllableButton from "@/components/controllables/button";
 
 type RBSheetRef = any;
 
@@ -28,48 +34,32 @@ const WidgetPages: React.FC = () => {
         {
             id: 1,
             name: 'Switch',
-            icon: <MaterialCommunityIcons name="toggle-switch-off" size={50} color="white" />,
+            icon: <ControllableSwitch toggleState={false} />,
         },
         {
             id: 2,
             name: 'Slider',
-            icon: (
-                <Slider
-                    style={{ width: 150, height: 40, marginTop: 20 }}
-                    minimumValue={0}
-                    maximumValue={100}
-                    step={1}
-                    minimumTrackTintColor="#fff"
-                    maximumTrackTintColor="#000"
-                    thumbTintColor="#fff"
-                />
-            ),
+            icon: <ControllableSlider maxValue={100} />,
         },
         {
             id: 3,
             name: 'Gauge',
-            icon: <Entypo name="gauge" size={40} color="white" />,
+            icon: <ControllableGauge />,
         },
         {
             id: 4,
-            name: 'Button',
-            icon: (
-                <View style={{ flexDirection: 'row', gap: 25, alignItems: 'center' }}>
-                    <FontAwesome6 name="minus" size={20} color="white" />
-                    <Text style={{ color: '#fff', fontSize: 24, fontWeight: '600' }}>1</Text>
-                    <FontAwesome6 name="plus" size={20} color="white" />
-                </View>
-            ),
+            name: 'Counter',
+            icon: <ControllableCounter />,
         },
         {
             id: 5,
             name: 'LED',
-            icon: <MaterialCommunityIcons name="lightbulb-on-outline" size={40} color="white" />,
+            icon: <ControllableLED />,
         },
         {
             id: 6,
             name: 'Button',
-            icon: <View style={{ width: 40, height: 40, borderWidth: 2, borderRadius: 100, borderColor: 'white' }} />,
+            icon: <ControllableButton />,
         },
     ];
 
