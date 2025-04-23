@@ -7,12 +7,17 @@ import {
     Text,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { get_user_controllables, get_user_devices } from "@/api/device";
+import { get_user_controllables } from "@/api/device";
 import AllertError from "@/components/alertSuccess";
 import { Ionicons } from "@expo/vector-icons";
+import GridPlane from "@/components/gridplane";
+import Widget from "@/components/controllables/widget";
+import ControllableButton from "@/components/controllables/button";
+import ControllableCounter from "@/components/controllables/counter";
+import ControllableGauge from "@/components/controllables/gauge";
+import ControllableLED from "@/components/controllables/led";
 
 const WidgetPages = () => {
     const router = useRouter();
@@ -32,33 +37,20 @@ const WidgetPages = () => {
     
     
     useEffect(() => {
-        AsyncStorage.getItem("device_id").then((device_id) => {
-            get_user_controllables().then((result) => {
-                if(!result.success) {
-                    setErrorMessage("Terjadi kesalahan.");
-                    setErrorVisible(true);
-                    return;
-                }
+        AsyncStorage.getItem("device_id").then(async (device_id) => {
+            setDeviceName((await AsyncStorage.getItem("device_name") || ""));
+            const result = await get_user_controllables()
+            
+            if(!result.success) {
+                setErrorMessage("Terjadi kesalahan.");
+                setErrorVisible(true);
+                return;
+            }
 
-                const controllables_data = result.data.data.controllables_data;
-                if(Array.isArray(controllables_data)) {
-                    setWidgetData((controllables_data.filter(value => value.device_id == device_id)) as any);
-                }
-            });
-
-            get_user_devices().then((result) => {
-                if(!result.success) {
-                    setErrorMessage("Terjadi kesalahan.");
-                    setErrorVisible(true);
-                    return;
-                } 
-
-                console.log("RESULT:");
-                console.log(result.data.data.devices_data);
-                
-
-                setDeviceName((Array.from(result.data.data.devices_data).find(value => (value as any).device_id == device_id) as any).device_name);
-            });
+            const controllables_data = result.data.data.controllables_data;
+            if(Array.isArray(controllables_data)) {
+                setWidgetData((controllables_data.filter(value => value.device_id == device_id)) as any);
+            }
         })
     }, [])
     
@@ -86,13 +78,23 @@ const WidgetPages = () => {
                 </View>
             </View>
 
-            <View style={styles.containerWidget}>
-                <View style={styles.innerConWidget}>
-                    {widgetData.map((widget_data, index) => {
-                        return <TouchableOpacity key={index} style={styles.widget}><Text style={{color: "white"}}>{widget_data.name}</Text></TouchableOpacity>;
-                    })}
-                </View>
-            </View>
+            <GridPlane numCols={5} numRows={5}>
+                <Widget controllable_name="LED 1" height={2} width={2} x={4} y={1}>
+                    <ControllableLED onToggle={(state) => { console.log(`LED 1 ${state ? "ON" : "OFF"}!`) }} />
+                </Widget>
+                <Widget controllable_name="LED 2" height={2} width={2} x={4} y={2}>
+                    <ControllableLED onToggle={(state) => { console.log(`LED 2 ${state ? "ON" : "OFF"}!`) }} />
+                </Widget>
+                <Widget controllable_name="LED 3" height={2} width={2} x={4} y={3}>
+                    <ControllableLED onToggle={(state) => { console.log(`LED 3 ${state ? "ON" : "OFF"}!`) }} />
+                </Widget>
+                <Widget controllable_name="Gauge" height={2} width={2} x={1} y={1}>
+                    <ControllableGauge />
+                </Widget>
+                <Widget controllable_name="SW 1" height={2} width={2} x={1} y={2}>
+                    <ControllableButton onPress={() => { console.log("PRESSED BUTTON!") }} />
+                </Widget>
+            </GridPlane>
 
             {/* Alert */}
             <AllertError

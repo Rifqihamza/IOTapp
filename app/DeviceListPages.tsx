@@ -53,6 +53,7 @@ const DeviceListPages = () => {
                         style={{ backgroundColor: "#3730A3", borderRadius: 15, margin: 10, padding: 20 }}
                         onPress={async () => {
                             await AsyncStorage.setItem("device_id", deviceData.device_id);
+                            await AsyncStorage.setItem("device_name", deviceData.device_name);
                             router.push("/WidgetPages");
                         }}>
                             <View>
