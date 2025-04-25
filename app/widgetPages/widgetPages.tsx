@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { View, Text, SafeAreaView, TouchableOpacity, StyleSheet, FlatList, TouchableHighlight } from 'react-native';
+import { View, Text, SafeAreaView, TouchableOpacity, StyleSheet, FlatList, TouchableHighlight, Platform } from 'react-native';
 import { useRouter } from 'expo-router';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Slider from '@react-native-community/slider';
@@ -12,6 +12,7 @@ import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Entypo from '@expo/vector-icons/Entypo';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
+import DatePickerComp from '@/components/dateTimePicker';
 
 type RBSheetRef = any;
 
@@ -20,9 +21,6 @@ const WidgetPages: React.FC = () => {
     const sheetAddWidgetRef = useRef<RBSheetRef>(null);
     const sheetNotifRef = useRef<RBSheetRef>(null);
     const sheetInfoRef = useRef<RBSheetRef>(null);
-
-    const [isVisibleDate, setIsVisibleDate] = useState(false);
-
 
     useEffect(() => {
         sheetAddWidgetRef.current?.close();
@@ -107,12 +105,7 @@ const WidgetPages: React.FC = () => {
         <View style={styles.sheetContainer}>
             <View style={styles.sheetHeader}>
                 <Text style={styles.sheetTitle}>Notification</Text>
-                <TouchableOpacity onPress={() => sheetNotifRef.current?.close()} style={styles.sheetCloseButton}>
-                    <Text style={styles.sheetCloseButtonText}>Close</Text>
-                </TouchableOpacity>
-            </View>
-            <View>
-                <RNDateTimePicker mode='date' display='default' value={new Date()} />
+                <DatePickerComp />
             </View>
         </View>
     );
@@ -241,7 +234,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     sheetTitle: {
-        fontSize: 18,
+        fontSize: 24,
         fontWeight: '600'
     },
     sheetCloseButton: {
