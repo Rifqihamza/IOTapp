@@ -1,25 +1,67 @@
 // AllertSuccess.tsx
-import React from 'react';
-import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import {
+    Modal,
+    View,
+    Text,
+    StyleSheet,
+    Animated,
+    Easing,
+    Image,
+} from 'react-native';
+import Feather from '@expo/vector-icons/Feather';
 
 interface Props {
     visible: boolean;
     message: string;
-    onConfirm: () => void;
+    onClose?: () => void;
 }
 
-const AllertSuccess: React.FC<Props> = ({ visible, message, onConfirm }) => {
+const AllertSuccess: React.FC<Props> = ({ visible, message, onClose }) => {
+    const scaleValue = useRef(new Animated.Value(0)).current;
+
+    useEffect(() => {
+        if (visible) {
+            Animated.timing(scaleValue, {
+                toValue: 1,
+                duration: 600,
+                easing: Easing.out(Easing.exp),
+                useNativeDriver: true,
+            }).start(() => {
+                setTimeout(() => {
+                    Animated.timing(scaleValue, {
+                        toValue: 0,
+                        duration: 500,
+                        easing: Easing.in(Easing.ease),
+                        useNativeDriver: true,
+                    }).start(() => {
+                        if (onClose) onClose();
+                    });
+                }, 2000); 
+            });
+        }
+    }, [visible]);
+
+    if (!visible) return null;
+
     return (
-        <Modal visible={visible} transparent animationType="fade">
+        <Modal visible={visible} transparent animationType="none">
             <View style={styles.overlay}>
-                <View style={styles.container}>
-                    <Text style={styles.message}>Yes!, {message}</Text>
-                    <View style={styles.buttonContainer}>
-                        <TouchableOpacity onPress={onConfirm} style={styles.confirmBtn}>
-                            <Text style={styles.btnText}>OK</Text>
-                        </TouchableOpacity>
+                <Animated.View
+                    style={[styles.container, { transform: [{ scale: scaleValue }] }]}
+                >
+                    <Image
+                        source={require('@/assets/images/wavePerson.png')}
+                        style={styles.backgroundImage}
+                    />
+                    <View style={styles.header}>
+                        <Text style={styles.headerText}>Perhatian!</Text>
                     </View>
-                </View>
+                    <View style={styles.content}>
+                        <Feather name="check-circle" size={80} color="green" />
+                        <Text style={styles.message}>Yes! {message}</Text>
+                    </View>
+                </Animated.View>
             </View>
         </Modal>
     );
@@ -36,36 +78,45 @@ const styles = StyleSheet.create({
     },
     container: {
         backgroundColor: '#fff',
+        overflow: 'hidden',
         padding: 24,
         borderRadius: 12,
         width: '70%',
+    },
+    backgroundImage: {
+        width: 200,
+        height: 200,
+        position: 'absolute',
+        right: -70,
+        bottom: 0,
+        zIndex: -10,
+        opacity: 0.4,
+    },
+    header: {
+        position: 'absolute',
+        top: 10,
+        left: 10,
+        paddingVertical: 5,
+        paddingHorizontal: 10,
+        backgroundColor: '#3730A3',
+        borderRadius: 10,
+    },
+    headerText: {
+        color: '#fff',
+        fontSize: 18,
+        fontWeight: 'bold',
+    },
+    content: {
+        marginTop: 40,
         alignItems: 'center',
     },
     message: {
-        fontSize: 20,
-        marginBottom: 20,
+        color: '#000',
+        fontWeight: '600',
+        borderRadius: 14,
+        padding: 20,
+        fontSize: 24,
+        marginTop: 15,
         textAlign: 'center',
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        gap: 12,
-    },
-    cancelBtn: {
-        backgroundColor: '#ccc',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 8,
-    },
-    confirmBtn: {
-        backgroundColor: '#3730A3',
-        paddingVertical: 15,
-        paddingHorizontal: 30,
-        borderRadius: 8,
-    },
-    btnText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
-        textAlign: "center"
     },
 });

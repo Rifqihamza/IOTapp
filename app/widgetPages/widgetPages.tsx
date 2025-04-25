@@ -1,14 +1,17 @@
-import React, { useRef, useEffect } from 'react';
-import { View, Text, SafeAreaView, TouchableOpacity, StyleSheet, FlatList } from 'react-native';
+import React, { useRef, useEffect, useState } from 'react';
+import { View, Text, SafeAreaView, TouchableOpacity, StyleSheet, FlatList, TouchableHighlight } from 'react-native';
 import { useRouter } from 'expo-router';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Slider from '@react-native-community/slider';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Entypo from '@expo/vector-icons/Entypo';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
 
 type RBSheetRef = any;
 
@@ -17,6 +20,9 @@ const WidgetPages: React.FC = () => {
     const sheetAddWidgetRef = useRef<RBSheetRef>(null);
     const sheetNotifRef = useRef<RBSheetRef>(null);
     const sheetInfoRef = useRef<RBSheetRef>(null);
+
+    const [isVisibleDate, setIsVisibleDate] = useState(false);
+
 
     useEffect(() => {
         sheetAddWidgetRef.current?.close();
@@ -105,7 +111,9 @@ const WidgetPages: React.FC = () => {
                     <Text style={styles.sheetCloseButtonText}>Close</Text>
                 </TouchableOpacity>
             </View>
-            {/* Konten notifikasi di sini */}
+            <View>
+                <RNDateTimePicker mode='date' display='default' value={new Date()} />
+            </View>
         </View>
     );
 
@@ -145,6 +153,34 @@ const WidgetPages: React.FC = () => {
                 </View>
             </View>
 
+            {/* Button Action */}
+            <View style={{ position: "absolute", bottom: 30, width: "100%", alignItems: "center" }}>
+                <View style={styles.actionBtnInnerContainer}>
+                    <TouchableHighlight
+                        underlayColor={"#312E81"}
+                        onPress={() => router.push('/widgetEditPages/widgetEditPages')}
+                        style={styles.actionBtn}
+                    >
+                        <AntDesign name='save' size={26} color={"black"} style={styles.actionBtnIcon} />
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                        underlayColor={"#312E81"}
+                        onPress={() => console.log("Button Save Pressed")}
+                        style={styles.actionBtn}
+                    >
+                        <AntDesign name='edit' size={26} color={"black"} style={styles.actionBtnIcon} />
+                    </TouchableHighlight>
+                    <TouchableHighlight
+                        underlayColor={"#312E81"}
+                        onPress={() => console.log("Button Save Pressed")}
+                        style={styles.actionBtn}
+                    >
+                        <AntDesign name='edit' size={26} color={"black"} style={styles.actionBtnIcon} />
+                    </TouchableHighlight>
+                </View>
+            </View>
+
+
             {/* 3 RBSheets */}
             <RBSheet ref={sheetAddWidgetRef} height={600} openDuration={300} customStyles={{ container: styles.sheetContainer }}>
                 <AddWidgetSheet />
@@ -155,7 +191,7 @@ const WidgetPages: React.FC = () => {
             <RBSheet ref={sheetInfoRef} height={700} openDuration={300} customStyles={{ container: styles.sheetContainer }}>
                 <InfoSheet />
             </RBSheet>
-        </SafeAreaView>
+        </SafeAreaView >
     );
 };
 
@@ -189,7 +225,8 @@ const styles = StyleSheet.create({
     headerTitle: {
         fontSize: 20,
         fontWeight: '600',
-        color: '#fff'
+        color: '#fff',
+        marginLeft: 15
     },
     sheetContainer: {
         paddingVertical: 20,
@@ -237,4 +274,25 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 16
     },
+    actionBtnInnerContainer: {
+        flexDirection: "row",
+        backgroundColor: "#3730A3",
+        borderRadius: 20,
+        paddingVertical: 8,
+        paddingHorizontal: 25,
+        gap: 30,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    actionBtn: {
+        padding: 10,
+        borderRadius: 50,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: "#fff"
+    },
+    actionBtnIcon: {
+        textAlign: "center",
+    }
+
 });

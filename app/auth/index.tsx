@@ -29,25 +29,29 @@ export default function LoginPages() {
     const [isLoading, setIsLoading] = useState(false)
     const router = useRouter();
 
-    const handleLogin = () => {
-        setIsLoading(true); // set loading true sebelum proses login
-        setTimeout(() => {  // Simulasi waktu loading (ganti dengan request asli jika perlu)
+
+    async function handleLogin(params: any) {
+        setIsLoading(true);
+
+        setTimeout(async () => {
             if (email === 'admin@gmail.com' && password === '1234') {
-                setSuccessVisible(true); // tampilkan alert sukses
+                setSuccessVisible(true);
+                await AsyncStorage.setItem('userToken', 'example-token');
+
+                // Delay 2 detik sebelum pindah ke halaman utama
+                setTimeout(() => {
+                    setSuccessVisible(false);
+                    router.replace('/');
+                }, 2000);
+
             } else {
-                setFailedVisible(true); // tampilkan alert gagal
+                setFailedVisible(true);
                 setEmail('');
                 setPassword('');
+                setIsLoading(false);
             }
-            setIsLoading(false); // set loading false setelah proses selesai
-        }, 2000); // Simulasi delay 2 detik
-    };
-
-    const handleConfirmSuccess = async () => {
-        setSuccessVisible(false);
-        await AsyncStorage.setItem('userToken', 'example-token');
-        router.replace('/');
-    };
+        }, 2000);
+    }
 
     const handleRegist = () => {
         console.log("Regist Pressed")
@@ -101,7 +105,7 @@ export default function LoginPages() {
                                     <TouchableHighlight style={styles.button} underlayColor={"#312E81"} onPress={handleLogin} disabled={isLoading}>
                                         <View style={styles.buttonContent}>
                                             {isLoading ? (
-                                                <ActivityIndicator size="small" color="#fff" />
+                                                <ActivityIndicator size="large" color="#fff" />
                                             ) : (
                                                 <Text style={styles.buttonText}>Login</Text>
                                             )}
@@ -113,7 +117,6 @@ export default function LoginPages() {
                                 <AllertSuccess
                                     visible={successVisible}
                                     message="Login Berhasil"
-                                    onConfirm={handleConfirmSuccess}
                                 />
 
                                 <AllertFailed

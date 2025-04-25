@@ -1,3 +1,4 @@
+import AllertSuccess from '@/components/alertSuccess';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { View, Text, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native';
