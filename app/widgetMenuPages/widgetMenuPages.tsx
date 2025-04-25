@@ -3,15 +3,12 @@ import { View, Text, SafeAreaView, TouchableOpacity, StyleSheet, FlatList, Touch
 import { useRouter } from 'expo-router';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Slider from '@react-native-community/slider';
-import DateTimePicker from '@react-native-community/datetimepicker';
-
 
 import Ionicons from '@expo/vector-icons/Ionicons';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Entypo from '@expo/vector-icons/Entypo';
-import RNDateTimePicker from '@react-native-community/datetimepicker';
 import DatePickerComp from '@/components/dateTimePicker';
 
 type RBSheetRef = any;
