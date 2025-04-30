@@ -1,11 +1,11 @@
-const api_base_url: string = "http://192.168.9.134:3000";
+const api_base_url: string = "http://192.168.9.43:8000";
 
-export async function send_api(endpoint: string, data: object | null = null) {
+export async function send_api({endpoint, data, method = "POST" }: {endpoint: string, data?: object, method?: string}) {
     try {
         console.log("DATA: ");
         console.log(data);
         const raw_response = await fetch(api_base_url+endpoint, {
-            method: "POST",
+            method: method,
             headers: {
                 "authorization": "IA9as9dASya9fashi12raCasdwq",
                 "Content-Type": data ? "application/json" : "text/plain"
@@ -28,7 +28,8 @@ export async function send_api(endpoint: string, data: object | null = null) {
         return {
             success: raw_response.ok,
             data: response,
-            error: error
+            error: error,
+            status_code: raw_response.status
         };
     }
     catch(error) {

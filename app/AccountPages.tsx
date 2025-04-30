@@ -24,7 +24,7 @@ const AccountPages = () => {
                 setDataAccount(result.data.data);
             }
             else {
-                if(result.error == "010") {
+                if(result.status_code == 401) {
                     router.replace("/auth");
                 }
             }
