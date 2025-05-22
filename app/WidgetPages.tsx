@@ -13,7 +13,7 @@ const WidgetPages = () => {
     const router = useRouter();
 
     const addWidgetBtn = () => {
-        router.push({ pathname: "/widgetPages/widgetPages" })
+        router.push({ pathname: "/widgetMenuPages/widgetMenuPages" })
     }
     return (
         <SafeAreaView style={styles.safeArea}>

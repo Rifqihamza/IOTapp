@@ -32,17 +32,6 @@
           "resizeMode": "contain",
           "backgroundColor": "#000"
         }
-      ],
-      [
-        "expo-font",
-        {
-          "fonts": [
-            {
-              "font": "Codec-Cold-Light",
-              "uri": "./assets/fonts/Codec-Cold-Light-trial.ttf"
-            }
-          ]
-        }
       ]
     ],
     "experiments": {
