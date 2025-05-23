@@ -14,7 +14,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-type RoutePath = '/WidgetPages' | '/AccountPages' | '/ConnectionPages';
+type RoutePath = '/projectPage' | '/AccountPages' | '/ConnectionPages';
 
 interface ItemRoute {
   name: string;
@@ -27,7 +27,7 @@ const HomePages = () => {
   const router = useRouter();
 
   const itemRoute: ItemRoute[] = [
-    { name: 'Widgets', route: '/WidgetPages', icon: 'widgets', colorIcon: '#fff' },
+    { name: 'Project', route: '/projectPage', icon: 'widgets', colorIcon: '#fff' },
     { name: 'Account', route: '/AccountPages', icon: 'person', colorIcon: '#fff' },
     { name: 'Connection', route: '/ConnectionPages', icon: 'wifi', colorIcon: '#fff' },
   ];

@@ -43,7 +43,6 @@ export default function LoginPages() {
                     setSuccessVisible(false);
                     router.replace('/');
                 }, 2000);
-
             } else {
                 setFailedVisible(true);
                 setEmail('');
