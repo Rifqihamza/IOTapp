@@ -30,7 +30,7 @@ export default function LoginPages() {
     const router = useRouter();
 
 
-    async function handleLogin(params: any) {
+    async function handleLogin() {
         setIsLoading(true);
 
         setTimeout(async () => {

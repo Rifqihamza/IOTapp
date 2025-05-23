@@ -10,7 +10,6 @@ import {
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { useRouter } from 'expo-router';
 import AntDesign from '@expo/vector-icons/AntDesign';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 
 const dropdownItems = [
@@ -216,7 +215,7 @@ const styles = StyleSheet.create({
     },
     statusContainer: {
         position: 'absolute',
-        bottom: 20,
+        bottom: 10,
         right: 20,
         flexDirection: 'row',
         alignItems: 'center',
