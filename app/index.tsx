@@ -104,16 +104,6 @@ const HomePages = () => {
           );
         })}
       </View>
-
-      <View style={{  }}>
-        <TouchableHighlight onPress={() => router.push("/trial")}>
-          <View>
-            <Text>
-              To Trial Page
-            </Text>
-          </View>
-        </TouchableHighlight>
-      </View>
     </SafeAreaView>
   );
 };
