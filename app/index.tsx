@@ -14,7 +14,7 @@ import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-type RoutePath = '/projectPage' | '/AccountPages' | '/ConnectionPages';
+type RoutePath = '/projectPage' | '/accountPage' | '/connectionPage';
 
 interface ItemRoute {
   name: string;
@@ -28,8 +28,8 @@ const HomePages = () => {
 
   const itemRoute: ItemRoute[] = [
     { name: 'Project', route: '/projectPage', icon: 'widgets', colorIcon: '#fff' },
-    { name: 'Account', route: '/AccountPages', icon: 'person', colorIcon: '#fff' },
-    { name: 'Connection', route: '/ConnectionPages', icon: 'wifi', colorIcon: '#fff' },
+    { name: 'Account', route: '/accountPage', icon: 'person', colorIcon: '#fff' },
+    { name: 'Connection', route: '/connectionPage', icon: 'wifi', colorIcon: '#fff' },
   ];
 
   // Authentication Check
@@ -103,6 +103,16 @@ const HomePages = () => {
             </TouchableHighlight>
           );
         })}
+      </View>
+
+      <View style={{  }}>
+        <TouchableHighlight onPress={() => router.push("/trial")}>
+          <View>
+            <Text>
+              To Trial Page
+            </Text>
+          </View>
+        </TouchableHighlight>
       </View>
     </SafeAreaView>
   );

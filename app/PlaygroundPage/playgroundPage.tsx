@@ -12,7 +12,7 @@ const PlaygroundPage = () => {
                     <AntDesign name="left" size={20} color="white" />
                     <Text style={{ color: "#fff", fontSize: 20, fontWeight: "600" }}>Kembali</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => router.push('/widgetMenuPage/widgetMenuPage')}>
+                <TouchableOpacity onPress={() => router.push('/widgetEditPage/widgetEditPage')}>
                     <MaterialIcons name="widgets" size={28} color="white" />
                 </TouchableOpacity>
             </View>
